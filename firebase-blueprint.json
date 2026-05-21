@@ -1,0 +1,89 @@
+{
+  "entities": {
+    "Warranty": {
+      "title": "Warranty",
+      "description": "Warranty record for VSTAR laboratory dental crowns/restorations.",
+      "type": "object",
+      "properties": {
+        "warrantyCode": {
+          "type": "string",
+          "description": "The unique warranty serial code (e.g., VSTAR2026)."
+        },
+        "birthYear": {
+          "type": "integer",
+          "description": "Birth year of the customer, used as security verification parameter."
+        },
+        "customerName": {
+          "type": "string",
+          "description": "Full name of the customer."
+        },
+        "phone": {
+          "type": "string",
+          "description": "Phone number of the customer/clinic."
+        },
+        "product": {
+          "type": "string",
+          "description": "The custom prosthesis product name."
+        },
+        "quantity": {
+          "type": "integer",
+          "description": "Number of units/crowns."
+        },
+        "shade": {
+          "type": "string",
+          "description": "Tooth shade/color code."
+        },
+        "installDate": {
+          "type": "string",
+          "description": "Crown installation date (YYYY-MM-DD or DD/MM/YYYY)."
+        },
+        "warrantyEndDate": {
+          "type": "string",
+          "description": "Warranty expiration date."
+        },
+        "clinicName": {
+          "type": "string",
+          "description": "Name of the executing clinic."
+        },
+        "note": {
+          "type": "string",
+          "description": "Any clinical design or support notes."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["Còn bảo hành", "Hết bảo hành"],
+          "description": "Status of warranty."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "System timestamp of creation."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "System timestamp of update."
+        }
+      },
+      "required": [
+        "warrantyCode",
+        "birthYear",
+        "customerName",
+        "phone",
+        "product",
+        "quantity",
+        "shade",
+        "installDate",
+        "warrantyEndDate",
+        "clinicName",
+        "status"
+      ]
+    }
+  },
+  "firestore": {
+    "warranties/{warrantyId}": {
+      "schema": "Warranty",
+      "description": "Warranties collection."
+    }
+  }
+}

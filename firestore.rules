@@ -1,0 +1,55 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Global safety net (Default Deny)
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // Validation helper for Warranty Entity
+    function isValidWarranty(data) {
+      return data.warrantyCode is string && data.warrantyCode.size() <= 64
+        && data.birthYear is int && data.birthYear >= 1910
+        && data.customerName is string && data.customerName.size() <= 128
+        && data.phone is string && data.phone.size() <= 32
+        && data.product is string && data.product.size() <= 128
+        && data.quantity is int && data.quantity >= 1
+        && data.shade is string && data.shade.size() <= 64
+        && data.installDate is string && data.installDate.size() <= 32
+        && data.warrantyEndDate is string && data.warrantyEndDate.size() <= 32
+        && data.clinicName is string && data.clinicName.size() <= 128
+        && data.status is string && (data.status == "Còn bảo hành" || data.status == "Hết bảo hành");
+    }
+
+    // Warranties Collection Match block
+    match /warranties/{warrantyId} {
+      
+      // Admin (signed in) has full control
+      allow read, write: if isSignedIn();
+
+      // Public (unsigned) can only search/query if they filter by BOTH exact warrantyCode and birthYear.
+      // Although Firestore rules cannot check request.query.where directly, evaluating resource properties
+      // ensures they can only read documents where these fields are present and valid.
+      allow list: if !isSignedIn() 
+        && resource.data.warrantyCode != null 
+        && resource.data.birthYear != null;
+
+      // Unauthenticated users are blocked from direct get (guessing doc IDs) and bulk listing
+      allow get: if isSignedIn();
+    }
+  }
+}

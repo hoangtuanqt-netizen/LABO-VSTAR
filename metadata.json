@@ -1,0 +1,6 @@
+{
+  "name": "LABO VSTAR",
+  "description": "Landing page cao cấp cho LABO VSTAR - Đối tác phục hình răng sứ, Implant, CAD/CAM nha khoa chuyên nghiệp và hệ thống tra cứu bảo hành.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
